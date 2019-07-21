@@ -1,0 +1,58 @@
+<header class="mdl-layout__header mdl-layout__header--waterfall site-header">
+    <div class="mdl-layout__header-row site-logo-row"><span class="mdl-layout__title">
+        <div class="site-logo"></div><span class="site-description">Bank Search</span></span></div>
+    <div class="mdl-layout__header-row site-navigation-row mdl-layout--large-screen-only">
+      <nav class="mdl-navigation mdl-typography--body-1-force-preferred-font"></nav>
+    </div>
+
+  </header>
+<div>
+
+  <div class="panel-table mat-elevation-z8">
+    <mat-form-field [formGroup]="missionForm">
+      <mat-select formControlName="city">
+        <mat-option *ngFor="let positionOpt of city" value={{positionOpt.cities}}>{{positionOpt.cities}}</mat-option>
+      </mat-select>
+      <mat-placeholder class="placeholder">City</mat-placeholder>
+    </mat-form-field>
+    <mat-form-field [formGroup]="missionForm">
+      <input matInput class="ml-3" formControlName="filterInput">
+      <mat-placeholder class="placeholder">Search</mat-placeholder>
+    </mat-form-field>
+    <table mat-table [dataSource]="missionData">
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>Favourite</th>
+            <td mat-cell *matCellDef="let row">
+              <mat-checkbox [checked]="row.fav" (change)="onChange($event, row.ind, row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef> S.No </th>
+        <td mat-cell *matCellDef="let element;let i = index">{{element.ind}}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="bank_name">
+        <th mat-header-cell *matHeaderCellDef> Bank Name </th>
+        <td mat-cell *matCellDef="let element" (click)="bankDetails(element.ind)"><a>{{element.bank_name}}</a></td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="branch">
+        <th mat-header-cell *matHeaderCellDef> Branch </th>
+        <td mat-cell *matCellDef="let element">{{element.branch}}</td>
+      </ng-container> -->
+      <ng-container matColumnDef="city">
+        <th mat-header-cell *matHeaderCellDef> City </th>
+        <td mat-cell *matCellDef="let element">{{element.city}}</td>
+      </ng-container>
+
+      <!-- <ng-container matColumnDef="state">
+        <th mat-header-cell *matHeaderCellDef> State </th>
+        <td mat-cell *matCellDef="let element">{{element.state}}</td>
+      </ng-container> -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[25, 50, 150, 300]" showFirstLastButtons></mat-paginator>
+  </div>
