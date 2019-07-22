@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DetailsService } from '../services/details.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
-import { takeWhile, debounceTime } from 'rxjs/operators';
+import { takeWhile, debounceTime, filter } from 'rxjs/operators';
 import { state } from '@angular/animations';
 import { DataShareService } from '../services/data-share.service';
 import { Router } from '@angular/router';
@@ -22,12 +22,13 @@ export class TableComponent implements OnInit {
   newData = new MatTableDataSource<IMissionElement>();
   tableData;
   selected;
+  response;
   selection = new SelectionModel<string>(true, []);
   public searchText: string;
   filteredValues = {
     city: ''
   };
-  city = [{ cities: '' }, { cities: 'MUMBAI' }, { cities: 'DELHI' }, { cities: 'PUNE' }, { cities: 'BANGALORE' }, { cities: 'CHANDIGARH' }];
+  city = ['' ,'MUMBAI',  'DELHI' , 'CHENNAI' , 'BHOPAL','CHANDIGARH' ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -53,29 +54,29 @@ export class TableComponent implements OnInit {
     this.missionForm.controls.city.valueChanges
       .pipe(debounceTime(500))
       .subscribe(value => {
-        this.missionData.filterPredicate = (data = value, filter: string) => {
-          return data.city == filter;
+        // this.missionData.filterPredicate = (data = value, filter: string) => {
+        //   return data.city == filter;
+        // };
+        let filtered = {
+          city: value
         };
-        this.missionData.filter = value.trim();
-      });
-      this.missionForm.controls.city.valueChanges.subscribe((positionFilterValue) => {
-        this.missionData.filter = positionFilterValue;
+
+        this.missionData.filter = JSON.stringify(filtered);
+        console.log(this.missionData);
+        
       });
     this.missionForm.controls.filterInput.valueChanges
       .pipe(debounceTime(500))
-      .subscribe(data => {
-        console.log(this.tableData);
+      .subscribe(value => {
+        console.log(this.missionData);
 
-        // this.missionData.filterPredicate = this.tableData.filterPredicate;
-        // console.log(data);
-        // console.log(this.missionData);
-
-        this.tableData.filter = data.trim().toLowerCase();
+        this.missionData.filter = value.trim().toLowerCase();
       });
   }
   fetchAllData() {
     this.dataService.getProducts().subscribe(res => {
       let tData = res;
+      this.response = res;
       console.log(Object.keys(tData).length);
       for (let i = 0; i < tData.length; i++) {
         tData[i]['fav'] = false;
@@ -104,9 +105,12 @@ export class TableComponent implements OnInit {
     this.route.navigate(['/bank/',  val]);
   }
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
+    console.log(filterValue);
     this.missionData.filter = filterValue;
+
+    if (this.missionData.paginator) {
+      this.missionData.paginator.firstPage();
+    }
   }
   onChange(event, index, item) {
     let id = index - 1;

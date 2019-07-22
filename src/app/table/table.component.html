@@ -9,16 +9,17 @@
 <div>
 
   <div class="panel-table mat-elevation-z8">
-    <mat-form-field [formGroup]="missionForm">
-      <mat-select formControlName="city">
-        <mat-option *ngFor="let positionOpt of city" value={{positionOpt.cities}}>{{positionOpt.cities}}</mat-option>
+    <mat-form-field >
+      <mat-select #select placeholder="City" (selectionChange)="applyFilter($event.value)">
+        <mat-option *ngFor="let city of city" [value]="city">
+          {{city}}
+        </mat-option>
       </mat-select>
-      <mat-placeholder class="placeholder">City</mat-placeholder>
     </mat-form-field>
-    <mat-form-field [formGroup]="missionForm">
-      <input matInput class="ml-3" formControlName="filterInput">
-      <mat-placeholder class="placeholder">Search</mat-placeholder>
-    </mat-form-field>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+      <mat-icon matSuffix>search</mat-icon>
+   </mat-form-field>
     <table mat-table [dataSource]="missionData">
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>Favourite</th>

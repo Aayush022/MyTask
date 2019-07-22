@@ -10,7 +10,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
-import { MatDialogModule, MatRadioModule, MatSnackBarModule, MatInputModule } from '@angular/material';
+import { MatDialogModule, MatRadioModule, MatSnackBarModule, MatInputModule, MatIconModule } from '@angular/material';
 import { MatCardModule} from '@angular/material';
 import { MatPaginatorModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,6 +38,7 @@ import { CachingInterceptorService } from './services/caching-interface.service'
     ReactiveFormsModule,
     MatMenuModule,
     MatCardModule,
+    MatIconModule,
     MatInputModule,
     HttpClientModule,
     ReactiveFormsModule,
