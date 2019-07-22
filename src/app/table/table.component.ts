@@ -28,7 +28,7 @@ export class TableComponent implements OnInit {
   filteredValues = {
     city: ''
   };
-  city = ['' ,'MUMBAI',  'DELHI' , 'CHENNAI' , 'BHOPAL','CHANDIGARH' ];
+  city = ['' ,'MUMBAI', 'DELHI' , 'CHENNAI' , 'BHOPAL', 'CHANDIGARH' ];
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
